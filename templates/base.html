@@ -1,0 +1,443 @@
+<!DOCTYPE html>
+<html lang="en" data-bs-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Regisbridge Private School{% endblock %}</title>
+    
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    {% block extra_css %}{% endblock %}
+    <style>
+        :root {
+            --primary-color: #6a1b9a;
+            --primary-light: #9c27b0;
+            --primary-dark: #4a148c;
+            --primary-hover: #7b1fa2;
+        }
+        
+        [data-bs-theme="dark"] {
+            --primary-color: #9c27b0;
+            --primary-light: #ba68c8;
+            --primary-dark: #7b1fa2;
+            --primary-hover: #ce93d8;
+        }
+        
+        /* Animation Keyframes */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        @keyframes slideIn {
+            from { transform: translateX(-100%); }
+            to { transform: translateX(0); }
+        }
+        
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+            100% { transform: scale(1); }
+        }
+        
+        @keyframes rotate {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+        
+        /* Theme Toggle Animation */
+        .theme-toggle {
+            background: none;
+            border: none;
+            color: white;
+            cursor: pointer;
+            padding: 0.5rem;
+            margin-left: 1rem;
+            transition: transform 0.3s ease;
+        }
+        .theme-toggle:hover {
+            color: #e1bee7;
+            transform: scale(1.1);
+        }
+        .theme-toggle i {
+            transition: transform 0.5s ease;
+        }
+        .theme-toggle:hover i {
+            transform: rotate(180deg);
+        }
+        
+        /* Navbar Animations */
+        .navbar-custom {
+            background-color: var(--primary-color);
+            padding: 1rem 0;
+            animation: slideIn 0.5s ease;
+        }
+        .navbar-custom .navbar-brand,
+        .navbar-custom .nav-link {
+            color: white;
+            transition: all 0.3s ease;
+        }
+        .navbar-custom .nav-link:hover {
+            color: #e1bee7;
+            transform: translateY(-2px);
+        }
+        .dropdown-menu {
+            border: none;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+            animation: fadeIn 0.3s ease;
+        }
+        .dropdown-item {
+            transition: all 0.3s ease;
+        }
+        .dropdown-item:hover {
+            background-color: var(--primary-light);
+            color: white;
+            transform: translateX(5px);
+        }
+        
+        /* Card Animations */
+        .card {
+            border-color: var(--primary-light);
+            transition: all 0.3s ease;
+            animation: fadeIn 0.5s ease;
+        }
+        .card:hover {
+            transform: translateY(-5px) scale(1.02);
+            box-shadow: 0 8px 16px rgba(106, 27, 154, 0.2);
+        }
+        
+        /* Button Animations */
+        .btn-primary {
+            background-color: var(--primary-color);
+            border-color: var(--primary-color);
+            transition: all 0.3s ease;
+        }
+        .btn-primary:hover {
+            background-color: var(--primary-hover);
+            border-color: var(--primary-hover);
+            transform: translateY(-2px);
+        }
+        .btn-primary:active {
+            transform: translateY(0);
+        }
+        
+        /* Section Title Animation */
+        .section-title {
+            color: var(--primary-color);
+            position: relative;
+            padding-bottom: 10px;
+            animation: fadeIn 0.5s ease;
+        }
+        .section-title::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 50px;
+            height: 3px;
+            background-color: var(--primary-color);
+            transition: width 0.3s ease;
+        }
+        .section-title:hover::after {
+            width: 100px;
+        }
+        
+        /* Alert Animations */
+        .alert {
+            animation: fadeIn 0.5s ease;
+        }
+        
+        /* Social Links Animation */
+        .social-links a {
+            transition: all 0.3s ease;
+            display: inline-block;
+        }
+        .social-links a:hover {
+            color: #e1bee7 !important;
+            transform: translateY(-3px) rotate(8deg);
+        }
+        
+        /* Breadcrumb Animation */
+        .breadcrumb-item a {
+            color: var(--primary-color);
+            text-decoration: none;
+            transition: all 0.3s ease;
+        }
+        .breadcrumb-item a:hover {
+            color: var(--primary-hover);
+            transform: translateX(5px);
+        }
+        
+        /* Main Content Animation */
+        .main-content {
+            min-height: calc(100vh - 300px);
+            animation: fadeIn 0.5s ease;
+        }
+        
+        /* Footer Animation */
+        .footer {
+            background-color: var(--primary-color);
+            color: white;
+            padding: 2rem 0;
+            margin-top: 3rem;
+            animation: fadeIn 0.5s ease;
+        }
+        
+        /* Theme Transition */
+        body {
+            transition: background-color 0.3s ease, color 0.3s ease;
+        }
+        
+        /* Loading Animation */
+        .loading {
+            animation: pulse 1.5s infinite;
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar navbar-expand-lg navbar-custom">
+        <div class="container">
+            <a class="navbar-brand" href="{% url 'homepage:home' %}">
+                <i class="fas fa-school me-2"></i>Regisbridge
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
+                    aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav me-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'homepage:home' %}">Home</a>
+                    </li>
+                    {% if user.is_authenticated %}
+                        {% if user.is_staff %}
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" href="#" id="adminDropdown" role="button"
+                               data-bs-toggle="dropdown" aria-expanded="false">
+                                Admin
+                            </a>
+                            <ul class="dropdown-menu" aria-labelledby="adminDropdown">
+                                <li><a class="dropdown-item" href="{% url 'core:manage_homepage' %}">Manage Home Page</a></li>
+                                <li><a class="dropdown-item" href="{% url 'core:manage_news' %}">Manage News</a></li>
+                                <li><a class="dropdown-item" href="{% url 'core:manage_events' %}">Manage Events</a></li>
+                                <li><hr class="dropdown-divider"></li>
+                                <li><a class="dropdown-item" href="/admin/">Django Admin</a></li>
+                            </ul>
+                        </li>
+                        {% endif %}
+                        {% if user.teacherprofile %}
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" href="#" id="teacherDropdown" role="button"
+                               data-bs-toggle="dropdown" aria-expanded="false">
+                                Teacher
+                            </a>
+                            <ul class="dropdown-menu" aria-labelledby="teacherDropdown">
+                                <li><a class="dropdown-item" href="{% url 'teachers:schedule' %}">My Schedule</a></li>
+                                <li><a class="dropdown-item" href="{% url 'teachers:announcements' %}">Announcements</a></li>
+                            </ul>
+                        </li>
+                        {% endif %}
+                        {% if user.studentprofile %}
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" href="#" id="studentDropdown" role="button"
+                               data-bs-toggle="dropdown" aria-expanded="false">
+                                Student
+                            </a>
+                            <ul class="dropdown-menu" aria-labelledby="studentDropdown">
+                                <li><a class="dropdown-item" href="{% url 'students:schedule' %}">My Schedule</a></li>
+                                <li><a class="dropdown-item" href="{% url 'students:announcements' %}">Announcements</a></li>
+                            </ul>
+                        </li>
+                        {% endif %}
+                    {% endif %}
+                </ul>
+                <form class="d-flex me-3" action="{% url 'core:search' %}" method="get">
+                    <input class="form-control me-2" type="search" placeholder="Search..." name="q">
+                    <button class="btn btn-outline-light" type="submit">
+                        <i class="fas fa-search"></i>
+                    </button>
+                </form>
+                <ul class="navbar-nav">
+                    {% if user.is_authenticated %}
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button"
+                           data-bs-toggle="dropdown" aria-expanded="false">
+                            <i class="fas fa-user me-2"></i>{{ user.username }}
+                        </a>
+                        <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="userDropdown">
+                            <li><a class="dropdown-item" href="{% url 'accounts:profile' %}">Profile</a></li>
+                            <li><a class="dropdown-item" href="{% url 'accounts:dashboard' %}">Dashboard</a></li>
+                            <li><hr class="dropdown-divider"></li>
+                            <li><a class="dropdown-item" href="{% url 'accounts:logout' %}">Logout</a></li>
+                        </ul>
+                    </li>
+                    <li class="nav-item">
+                        <button class="theme-toggle" id="themeToggle" aria-label="Toggle theme">
+                            <i class="fas fa-moon"></i>
+                        </button>
+                    </li>
+                    {% else %}
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'accounts:login' %}">Login</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'accounts:register' %}">Register</a>
+                    </li>
+                    {% endif %}
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <div class="main-content">
+        <!-- Breadcrumbs -->
+        <nav aria-label="breadcrumb">
+            <div class="container">
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item"><a href="{% url 'homepage:home' %}">Home</a></li>
+                    {% block breadcrumbs %}{% endblock %}
+                </ol>
+            </div>
+        </nav>
+
+        <!-- Messages -->
+        {% if messages %}
+        <div class="container mt-3">
+            {% for message in messages %}
+            <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
+                {{ message }}
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+            {% endfor %}
+        </div>
+        {% endif %}
+
+        <!-- Page Content -->
+        {% block content %}{% endblock %}
+    </div>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-4 mb-3">
+                    <h5>Quick Links</h5>
+                    <ul class="list-unstyled">
+                        <li><a href="{% url 'homepage:home' %}" class="text-white">Home</a></li>
+                        {% if not user.is_authenticated %}
+                        <li><a href="{% url 'accounts:login' %}" class="text-white">Login</a></li>
+                        <li><a href="{% url 'accounts:register' %}" class="text-white">Register</a></li>
+                        {% endif %}
+                    </ul>
+                </div>
+                <div class="col-md-4 mb-3">
+                    <h5>Contact Us</h5>
+                    <ul class="list-unstyled">
+                        <li><i class="fas fa-phone me-2"></i>+1234567890</li>
+                        <li><i class="fas fa-envelope me-2"></i>info@regisbridge.edu</li>
+                        <li><i class="fas fa-map-marker-alt me-2"></i>123 School Street, City</li>
+                    </ul>
+                </div>
+                <div class="col-md-4">
+                    <h5>Follow Us</h5>
+                    <div class="social-links">
+                        <a href="#" class="text-white me-3"><i class="fab fa-facebook fa-lg"></i></a>
+                        <a href="#" class="text-white me-3"><i class="fab fa-twitter fa-lg"></i></a>
+                        <a href="#" class="text-white me-3"><i class="fab fa-instagram fa-lg"></i></a>
+                        <a href="#" class="text-white"><i class="fab fa-linkedin fa-lg"></i></a>
+                    </div>
+                </div>
+            </div>
+            <div class="row mt-3">
+                <div class="col-12 text-center">
+                    <p class="mb-0">&copy; {% now "Y" %} Regisbridge Private School. All rights reserved.</p>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Bootstrap Bundle with Popper -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        // Theme toggle functionality
+        document.addEventListener('DOMContentLoaded', function() {
+            const themeToggle = document.getElementById('themeToggle');
+            const html = document.documentElement;
+            const icon = themeToggle.querySelector('i');
+            
+            // Check for saved theme preference
+            const savedTheme = localStorage.getItem('theme') || 'light';
+            html.setAttribute('data-bs-theme', savedTheme);
+            updateThemeIcon(savedTheme);
+            
+            themeToggle.addEventListener('click', function() {
+                const currentTheme = html.getAttribute('data-bs-theme');
+                const newTheme = currentTheme === 'light' ? 'dark' : 'light';
+                
+                // Add transition class
+                document.body.classList.add('theme-transition');
+                
+                // Update theme
+                html.setAttribute('data-bs-theme', newTheme);
+                localStorage.setItem('theme', newTheme);
+                
+                // Animate icon
+                icon.style.transform = 'rotate(360deg)';
+                icon.style.transition = 'transform 0.5s ease';
+                
+                // Update icon after animation
+                setTimeout(() => {
+                    updateThemeIcon(newTheme);
+                    icon.style.transform = 'none';
+                }, 500);
+                
+                // Remove transition class after animation
+                setTimeout(() => {
+                    document.body.classList.remove('theme-transition');
+                }, 300);
+            });
+            
+            function updateThemeIcon(theme) {
+                icon.className = theme === 'light' ? 'fas fa-moon' : 'fas fa-sun';
+            }
+            
+            // Add animation to cards on scroll
+            const cards = document.querySelectorAll('.card');
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.style.opacity = '1';
+                        entry.target.style.transform = 'translateY(0)';
+                    }
+                });
+            }, {
+                threshold: 0.1
+            });
+            
+            cards.forEach(card => {
+                card.style.opacity = '0';
+                card.style.transform = 'translateY(20px)';
+                card.style.transition = 'all 0.5s ease';
+                observer.observe(card);
+            });
+            
+            // Add hover effect to navigation items
+            const navItems = document.querySelectorAll('.nav-link');
+            navItems.forEach(item => {
+                item.addEventListener('mouseenter', () => {
+                    item.style.transform = 'translateY(-2px)';
+                });
+                item.addEventListener('mouseleave', () => {
+                    item.style.transform = 'translateY(0)';
+                });
+            });
+        });
+    </script>
+    {% block extra_js %}{% endblock %}
+</body>
+</html> 
